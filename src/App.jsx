@@ -1,0 +1,217 @@
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+
+import LiquidNav from './components/organisms/LiquidNav';
+import BackgroundOrganism from './components/organisms/BackgroundOrganism';
+import HeroSection from './components/organisms/HeroSection';
+import AboutSection from './components/organisms/AboutSection';
+import SkillsSection from './components/organisms/SkillsSection';
+import ProjectsSection from './components/organisms/ProjectsSection';
+import ContactSection from './components/organisms/ContactSection';
+import Footer from './components/organisms/Footer';
+
+import { projects } from './data/projects';
+import { skills } from './data/skills.jsx';
+import { usePerformanceMonitor } from './hooks/usePerformanceMonitor';
+import { useTranslation } from './hooks/useTranslation';
+import { MOBILE_MAX } from './utils/breakpoints';
+
+export default function App() {
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  const { lang } = useTranslation();
+  const [activeSection, setActiveSection] = useState('inicio');
+  const cursorGlowRef = useRef(null);
+  const manualScrollTimeoutRef = useRef(null);
+  const isManualRef = useRef(false);
+  const activeSectionRef = useRef('inicio');
+
+  const setActive = useCallback((section) => {
+    activeSectionRef.current = section;
+    setActiveSection(section);
+  }, []);
+
+  const handleNavClick = useCallback((sectionId) => {
+    isManualRef.current = true;
+    clearTimeout(manualScrollTimeoutRef.current);
+    setActive(sectionId);
+    // Must be > 1000ms (scroll animation duration) to prevent the scroll
+    // listener from racing and overwriting activeSection mid-animation
+    manualScrollTimeoutRef.current = setTimeout(() => {
+      isManualRef.current = false;
+    }, 1200);
+  }, [setActive]);
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+
+  useEffect(() => {
+    let ticking = false;
+
+    const sections = ['inicio', 'sobre-mi', 'skills', 'proyectos', 'contacto'];
+
+    const getCurrentSection = () => {
+      let current = '';
+      for (const id of sections) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= 300) {
+            current = id;
+          }
+        }
+      }
+      return current || sections[0];
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          if (isManualRef.current) {
+            ticking = false;
+            return;
+          }
+
+          const current = getCurrentSection();
+          if (current && current !== activeSectionRef.current) {
+            setActive(current);
+          }
+          ticking = false;
+        });
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    const check = () => {
+      const current = getCurrentSection();
+      if (current && current !== activeSectionRef.current) {
+        setActive(current);
+      }
+    };
+    setTimeout(check, 100);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      ticking = false;
+    };
+  }, [setActive]);
+
+  useEffect(() => {
+    let ticking = false;
+    const handleGlobalMouseMove = (e) => {
+      if (!ticking && cursorGlowRef.current) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          if (cursorGlowRef.current) {
+            cursorGlowRef.current.style.setProperty('--mouse-x', `${e.clientX}px`);
+            cursorGlowRef.current.style.setProperty('--mouse-y', `${e.clientY}px`);
+          }
+          ticking = false;
+        });
+      }
+    };
+    window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
+  }, []);
+
+  const toggleTheme = useCallback(() => setTheme(theme === 'dark' ? 'light' : 'dark'), [theme]);
+
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth <= MOBILE_MAX);
+
+  useEffect(() => {
+    let timeout;
+    const checkMobile = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => setIsMobile(window.innerWidth <= MOBILE_MAX), 150);
+    };
+    window.addEventListener('resize', checkMobile, { passive: true });
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      clearTimeout(timeout);
+    };
+  }, []);
+
+  const { isLagging } = usePerformanceMonitor();
+
+  const performanceTier = useMemo(() => {
+    const lowMemory = typeof navigator !== 'undefined' && navigator.deviceMemory < 4;
+    return (isMobile || isLagging || lowMemory) ? 'low' : 'high';
+  }, [isMobile, isLagging]);
+
+  const socialLinks = useMemo(() => [
+    { name: 'GitHub', href: 'https://github.com/Darwin-Nunez-10', iconKey: 'github' },
+    { name: 'LinkedIn', href: 'https://www.linkedin.com/in/darwin-nu%C3%B1ez-b74452370/', iconKey: 'linkedin' },
+    { name: 'Email', href: 'mailto:darwinn990@gmail.com', iconKey: 'email' },
+  ], []);
+
+  const handleCVDownload = useCallback(() => {  
+    window.open(`/cv/Darwin_Nuñez_CV_${lang.toUpperCase()}.pdf`, '_blank');
+  }, [lang]);
+
+  const [loadBg, setLoadBg] = useState(() => typeof window !== 'undefined' && window.innerWidth > 768);
+  useEffect(() => {
+    // Si es móvil (pantallas pequeñas), retrasamos la carga del 3D hasta que
+    // la página esté completamente lista para no penalizar el rendimiento en Lighthouse.
+    if (window.innerWidth <= 768) {
+      let initiated = false;
+      const initBg = () => {
+        if (initiated) return;
+        initiated = true;
+        setLoadBg(true);
+        window.removeEventListener('scroll', initBg);
+        window.removeEventListener('touchstart', initBg);
+      };
+      
+      // Inicia si el usuario interactúa (mejor UX y previene bloqueos)
+      window.addEventListener('scroll', initBg, { passive: true });
+      window.addEventListener('touchstart', initBg, { passive: true });
+      
+      // O inicia de forma segura después de 3.5 segundos si no hay interacción
+      setTimeout(initBg, 3500);
+    }
+  }, []);
+
+  return (
+    <div className={`min-h-screen font-sans text-gray-900 dark:text-white bg-[#DADADC] dark:bg-[#03050a] transition-colors duration-[2000ms] ease-in-out selection:bg-cyan-500/30 relative`}>
+
+      {!isMobile && (
+        <div
+          ref={cursorGlowRef}
+          className="pointer-events-none fixed inset-0 z-[1] h-full w-full bg-[radial-gradient(circle_at_var(--mouse-x,_0)_var(--mouse-y,_0),rgba(14,165,233,0.15)_0%,transparent_50%)] transition-opacity duration-700"
+        ></div>
+      )}
+
+      {loadBg && <BackgroundOrganism theme={theme} performanceTier={performanceTier} />}
+
+      <LiquidNav activeSection={activeSection} toggleTheme={toggleTheme} isDark={theme === 'dark'} onNavClick={handleNavClick} />
+
+      <main className="relative z-10 w-full overflow-x-hidden">
+        <HeroSection
+          socialLinks={socialLinks}
+          isMobile={isMobile}
+          theme={theme}
+          onCVDownload={handleCVDownload}
+        />
+
+        <AboutSection />
+
+        <SkillsSection skills={skills} performanceTier={performanceTier} />
+
+        <ProjectsSection projects={projects} />
+
+        <ContactSection socialLinks={socialLinks} theme={theme} />
+
+        <Footer />
+      </main>
+
+      
+    </div>
+  );
+}

@@ -1,0 +1,1140 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@font-face {
+  font-family: "Avant";
+  src: url("/fonts/avant-garde.woff2") format("woff2");
+  font-display: swap;
+}
+
+@keyframes hero-photo-in {
+  from {
+    opacity: 0;
+    transform: translateY(64px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-photo-reveal {
+  /* Eliminado temporalmente o definitivamente para arreglar el NO_LCP de Lighthouse */
+  /* animation: hero-photo-in 0.75s ease both; */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-photo-reveal {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-[#DADADC] dark:bg-[#03050a] text-gray-900 dark:text-white transition-colors duration-[2000ms] ease-in-out;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  html {
+    overflow-x: hidden;
+    touch-action: manipulation;
+  }
+}
+
+:root {
+  --c-glass: #bbbbbc;
+  --c-light: #fff;
+  --c-dark: #000;
+  --c-content: #2a2a35;
+  --c-action: #0ea5e9;
+  --glass-reflex-dark: 1;
+  --glass-reflex-light: 1;
+  --saturation: 150%;
+}
+
+html.dark {
+  --c-content: #e1e1e1;
+  --c-action: #38bdf8;
+  --glass-reflex-dark: 2;
+  --glass-reflex-light: 0.3;
+  --c-glass: #bbbbbc;
+  --saturation: 150%;
+}
+
+@property --mouse-x {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --mouse-y {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@layer utilities {
+  .text-gradient-animated {
+    background-size: 200% 200%;
+    animation: animated-gradient 6s linear infinite;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .blinking-cursor {
+    animation: blink 1s step-end infinite;
+  }
+}
+
+@keyframes animated-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes sketchStroke {
+  0% {
+    stroke-dashoffset: 20;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 4;
+    opacity: 0;
+  }
+}
+
+.sketch-lines.animate .sketch-line,
+.sketch-lines.animate .sketch-line-blur {
+  animation: sketchStroke 0.8s ease-out forwards;
+}
+
+.sketch-card {
+  background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.5);
+  backdrop-filter: blur(6px) saturate(1.5);
+  border: 1px solid transparent;
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent),
+    inset 1.5px 1.5px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 75%), transparent), 
+    inset -1px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 50%), transparent);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+html.dark .sketch-card {
+  background-color: color-mix(in srgb, var(--c-glass) 20%, transparent);
+}
+
+.sketch-card:hover {
+  transform: scale(1.02);
+  background-color: color-mix(in srgb, var(--c-glass) 28%, transparent);
+}
+
+/* ── Glass Card (Base primitive with liquid glass reflex) ── */
+.glass-card {
+  background-color: rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  border: 1px solid transparent;
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 75%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 55%), transparent), 
+    inset -2px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent),
+    0 12px 32px -8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+html.dark .glass-card {
+  background-color: rgba(15, 17, 26, 0.6);
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 75%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 55%), transparent), 
+    inset -2px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent),
+    0 16px 40px -8px rgba(0, 0, 0, 0.4);
+}
+
+.glass-card:hover {
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 65%), transparent), 
+    inset -2px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 50%), transparent),
+    0 16px 36px -8px rgba(0, 0, 0, 0.12);
+}
+
+html.dark .glass-card:hover {
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 65%), transparent), 
+    inset -2px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 50%), transparent),
+    0 20px 48px -10px rgba(0, 0, 0, 0.5);
+}
+
+.glass-card.is-low-perf {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.05);
+}
+
+html.dark .glass-card.is-low-perf {
+  background-color: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* ── Project Cards (Dark elegant obsidian glass with crystal reflex) ── */
+.project-card {
+  background-color: rgba(255, 255, 255, 0.51);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid transparent;
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 75%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 55%), transparent), 
+    inset -2px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent),
+    0 12px 32px -8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+html.dark .project-card {
+  background-color: rgba(15, 17, 26, 0.65);
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 75%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 55%), transparent), 
+    inset -2px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent),
+    0 16px 40px -8px rgba(0, 0, 0, 0.4);
+}
+
+.group:hover .project-card,
+.project-card:hover {
+  transform: translateY(-4px);
+  background-color: rgba(255, 255, 255, 0.62);
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 65%), transparent), 
+    inset -2px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 50%), transparent),
+    0 20px 48px -10px rgba(0, 0, 0, 0.12);
+}
+
+html.dark .group:hover .project-card,
+html.dark .project-card:hover {
+  transform: translateY(-4px);
+  background-color: rgba(18, 21, 32, 0.79);
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 65%), transparent), 
+    inset -2px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 50%), transparent),
+    0 20px 48px -10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Mobile Nav Bar */
+.mobile-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px;
+  border-radius: 99em;
+  min-height: 48px;
+  background-color: rgba(15, 17, 26, 0.8);
+  box-shadow: 0px 6px 16px 0px rgba(0,0,0,0.15);
+  gap: 12px;
+}
+
+html.bg-loaded .mobile-nav-bar {
+  background-color: color-mix(in srgb, var(--c-glass, #bbbbbc) 18%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+}
+
+.mobile-nav-theme {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--c-content, #2a2a35);
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-nav-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--c-content, #2a2a35);
+  letter-spacing: 0.3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mobile-nav-hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: rgba(15, 17, 26, 0.8);
+  box-shadow: 0px 4px 14px 0px rgba(0,0,0,0.2);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+html.bg-loaded .mobile-nav-hamburger {
+  background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.5);
+  backdrop-filter: blur(6px) saturate(1.5);
+  border: 1px solid transparent;
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 75%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 55%), transparent), 
+    inset -2px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent),
+    0 12px 32px -8px rgba(0, 0, 0, 0.08);
+}
+
+.hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--c-content, #2a2a35);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  /* Liquid glass overlay — frosted with subtle dim */
+  background: color-mix(in srgb, var(--c-dark) 12%, color-mix(in srgb, var(--c-glass) 8%, transparent));
+  -webkit-backdrop-filter: blur(6px) saturate(1.5);
+  backdrop-filter: blur(6px) saturate(1.5);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sidebar-overlay-closed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-overlay-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Sidebar Drawer — same glass system as navbar */
+.sidebar-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100dvh;
+  width: 260px;
+  max-width: 82vw;
+  z-index: 60;
+  /* Dark fallback before bg-loaded */
+  background-color: rgba(15, 17, 26, 0.85);
+  border-left: 1px solid transparent;
+  box-shadow:
+    -8px 0 40px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+    inset -1px 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 25%), transparent),
+    inset 0 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), background-color 600ms ease;
+  will-change: transform;
+  overflow-y: auto;
+}
+
+html.bg-loaded .sidebar-drawer {
+  background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.5);
+  backdrop-filter: blur(6px) saturate(1.5);
+  box-shadow:
+    -8px 0 40px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 18%), transparent),
+    inset -1px 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent),
+    inset 0 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent);
+}
+
+.sidebar-drawer.dragging {
+  transition: none;
+}
+
+.sidebar-drawer-closed {
+  transform: translateX(100%);
+}
+
+.sidebar-drawer-open {
+  transform: translateX(0);
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8px 20px 16px;
+}
+
+/* Close button — same glass as lang-switcher-btn */
+.sidebar-close-btn {
+  background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.5);
+  backdrop-filter: blur(6px) saturate(1.5);
+  border: 1px solid transparent;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 25%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 55%), transparent),
+    inset -1px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent);
+  color: var(--c-content);
+  cursor: pointer;
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 200ms ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.sidebar-close-btn:hover {
+  background-color: color-mix(in srgb, var(--c-glass) 38%, transparent);
+}
+
+/* Sidebar Pill Container */
+.sidebar-pill-container {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Sidebar Liquid Pill — exact same system as liquid-nav-pill */
+.sidebar-pill {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 0;
+  z-index: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  background-color: rgba(15, 17, 26, 0.35);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+    inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+    inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+    inset -1px 2px 3px -1px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent),
+    inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent),
+    0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+  transition: transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              scale 200ms ease-out;
+  will-change: transform;
+}
+
+html.bg-loaded .sidebar-pill {
+  background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
+}
+
+.sidebar-pill.dragging {
+  transition: none;
+}
+
+.sidebar-pill.moving {
+  /* Vertical squish: compress in Y (direction of travel), expand in X */
+  scale: 1.04 0.95;
+  transition: transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              scale 200ms ease-in;
+}
+
+/* Sidebar Links — opacity + translateX nudge like lang-switcher-items */
+.sidebar-link {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  padding: 12px 22px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--c-content);
+  text-decoration: none;
+  opacity: 0.65;
+  transform-origin: left center;
+  transition: transform 200ms cubic-bezier(0.34, 1.4, 0.64, 1), opacity 180ms ease;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sidebar-link:not(.sidebar-link-active):hover,
+.sidebar-link:not(.sidebar-link-active):active {
+  opacity: 1;
+  transform: translateX(6px);
+}
+
+.sidebar-link-active {
+  opacity: 1;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transform: none;
+  cursor: default;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  border-top: 1px solid color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 20%), transparent);
+}
+
+.sidebar-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 20px;
+  min-height: 56px;
+}
+
+.sidebar-theme-label {
+  font-size: 0.9rem;
+  color: var(--c-content);
+  opacity: 0.65;
+}
+
+/* Theme button — same as close btn */
+.sidebar-theme-btn {
+  background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.5);
+  backdrop-filter: blur(6px) saturate(1.5);
+  border: 1px solid transparent;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 25%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 55%), transparent),
+    inset -1px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent);
+  color: var(--c-content);
+  cursor: pointer;
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 200ms ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.sidebar-theme-btn:hover {
+  background-color: color-mix(in srgb, var(--c-glass) 38%, transparent);
+}
+
+
+/* Body scroll lock */
+body.sidebar-open {
+  overflow: hidden;
+}
+
+/* ── Language Switcher ── */
+.lang-switcher-btn {
+  color: var(--c-content);
+  background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.5);
+  backdrop-filter: blur(6px) saturate(1.5);
+  border: 1px solid transparent;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 25%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 55%), transparent),
+    inset -1px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 45%), transparent);
+  transition: background-color 600ms ease, box-shadow 600ms ease, color 400ms ease;
+  cursor: pointer;
+}
+
+.lang-switcher-btn:hover {
+  background-color: color-mix(in srgb, var(--c-glass) 38%, transparent);
+}
+
+html.dark .lang-switcher-btn {
+  background-color: color-mix(in srgb, var(--c-glass) 29%, transparent);
+}
+
+html.dark .lang-switcher-btn:hover {
+  background-color: color-mix(in srgb, var(--c-glass) 42%, transparent);
+}
+
+/* Dropdown: same glass as navbar, slightly more opaque for readability */
+/* Direction-aware transform origins */
+.lang-switcher-dropdown[data-direction="down"] {
+  transform-origin: top right;
+}
+.lang-switcher-dropdown[data-direction="up"] {
+  transform-origin: bottom right;
+}
+
+/*
+ * Apple-style critically damped popover animation.
+ * KEY: No overshoot, no bounce. The element materializes smoothly.
+ * Opacity resolves FASTER than transform for a staggered feel.
+ */
+@keyframes dropSmoothEnter {
+  0%   { opacity: 0;   transform: scale(0.92) translateY(var(--drop-y, -8px)); }
+  40%  { opacity: 1; }
+  100% { opacity: 1;   transform: scale(1)    translateY(0px); }
+}
+
+@keyframes dropSmoothExit {
+  0%   { opacity: 1;   transform: scale(1) translateY(0px); }
+  100% { opacity: 0;   transform: scale(0.95) translateY(var(--drop-y, -5px)); }
+}
+.lang-switcher-dropdown {
+  /* Prevent text selection on mobile long-press */
+  user-select: none;
+  -webkit-user-select: none;
+  background-color: color-mix(in srgb, var(--c-glass) 18%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.5);
+  backdrop-filter: blur(6px) saturate(1.5);
+  border-radius: 20px;
+  border: 1px solid transparent;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent),
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+    0 20px 60px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 600ms ease;
+}
+
+html.dark .lang-switcher-dropdown {
+  background-color: color-mix(in srgb, var(--c-glass) 31%, transparent);
+}
+
+.lang-switcher-dropdown.entering {
+  /* direction="down" drops from top, direction="up" rises from bottom */
+  animation: dropSmoothEnter 320ms cubic-bezier(0.2, 0.6, 0.35, 1) forwards;
+}
+.lang-switcher-dropdown[data-direction="down"].entering  { --drop-y: -8px; }
+.lang-switcher-dropdown[data-direction="up"].entering    { --drop-y:  8px; }
+
+.lang-switcher-dropdown.exiting {
+  animation: dropSmoothExit 180ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+.lang-switcher-dropdown[data-direction="down"].exiting   { --drop-y: -5px; }
+.lang-switcher-dropdown[data-direction="up"].exiting     { --drop-y:  5px; }
+
+/* Liquid pill inside dropdown */
+.lang-switcher-pill {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  z-index: 0;
+  border-radius: 99em;
+  pointer-events: none;
+  background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+    inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent),
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 70%), transparent),
+    0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+  transition: transform 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+.lang-switcher-pill.dragging {
+  transition: none !important;
+  transform: translateY(var(--drag-y, 0px)) !important;
+}
+
+.lang-switcher-pill.moving {
+  /* Vertical squish: compress in Y (direction of travel), expand in X */
+  scale: 1.04 0.95;
+  transition: transform 480ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              scale 200ms ease-in;
+}
+
+/* Items: natural left-anchored nudge instead of center-scale */
+.lang-switcher-item {
+  color: var(--c-content);
+  opacity: 0.65;
+  transform-origin: left center;
+  transition: transform 200ms cubic-bezier(0.34, 1.4, 0.64, 1), opacity 180ms ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  /* Prevent text selection and iOS long-press context menu */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Disable hover states while dragging to prevent text shifting */
+.lang-switcher-dropdown.is-dragging .lang-switcher-item {
+  pointer-events: none;
+}
+
+.lang-switcher-item:not(.active):hover {
+  opacity: 1;
+  transform: translateX(5px);
+}
+
+.lang-switcher-item.active {
+  opacity: 1;
+  font-weight: 700;
+  transform: none;
+  cursor: default;
+}
+
+
+/* ── Glass Dock (social links) ── */
+.glass-dock {
+  background-color: rgba(15, 17, 26, 0.85);
+  border: 1px solid transparent;
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 25%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent), 
+    inset -1px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 50%), transparent), 
+    inset -1px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 40%), transparent);
+  transition: background-color 400ms cubic-bezier(1, 0.0, 0.4, 1), box-shadow 400ms;
+  isolation: isolate;
+}
+
+html.bg-loaded .glass-dock {
+  background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.5);
+  backdrop-filter: blur(6px) saturate(1.5);
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent), 
+    inset -2px -5px 1px -4px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 50%), transparent);
+}
+
+.glass-dock-tooltip {
+  color: var(--c-content);
+  background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  backdrop-filter: blur(16px) saturate(1.5);
+  border: 1px solid color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent);
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+    inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent);
+  transition: opacity 0.15s;
+}
+
+/* Light-mode SVG icon visibility fix — Github icon only */
+.dock-icon-wrapper[data-icon="github"] svg rect[fill-opacity="0.04"] {
+  fill-opacity: 0.12;
+}
+
+html:not(.dark) .dock-icon-wrapper[data-icon="github"] svg path[fill="white"] {
+  fill: #1a1a2e;
+}
+
+html:not(.dark) .dock-icon-wrapper[data-icon="github"] svg ellipse[fill="white"] {
+  fill: #1a1a2e;
+}
+
+html:not(.dark) .dock-icon-wrapper[data-icon="github"] svg circle[fill="white"] {
+  fill: #1a1a2e;
+  fill-opacity: 0.08;
+}
+
+html:not(.dark) .dock-icon-wrapper[data-icon="github"] svg rect[stroke-opacity="0.5"] {
+  stroke-opacity: 0.25;
+}
+
+/* Light-mode: increase contrast on all dock icon card backgrounds */
+html:not(.dark) .dock-icon-wrapper svg rect[fill-opacity="0.04"] {
+  fill-opacity: 0.08;
+}
+
+
+/* Liquid Navigation Styles */
+.liquid-nav {
+  display: inline-flex;
+}
+
+.desktop-nav-only {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .desktop-nav-only {
+    display: inline-flex !important;
+  }
+}
+
+.liquid-nav-container {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  margin: 0;
+  padding: 10px 20px;
+  border-radius: 99em;
+  min-height: 56px;
+  list-style: none;
+  background-color: rgba(15, 17, 26, 0.85);
+  border: 1px solid transparent;
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 25%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent), 
+    inset -1px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 50%), transparent), 
+    inset -1px -4px 1px -3px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 40%), transparent);
+  transition: background-color 400ms cubic-bezier(1, 0.0, 0.4, 1), box-shadow 400ms;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+html.bg-loaded .liquid-nav-container {
+  background-color: color-mix(in srgb, var(--c-glass) 16%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.5);
+  backdrop-filter: blur(6px) saturate(1.5);
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 35%), transparent),
+    inset 2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent), 
+    inset -2px -5px 1px -4px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 50%), transparent);
+}
+
+.liquid-nav-pill {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 0;
+  z-index: 0;
+  border-radius: 99em;
+  pointer-events: none;
+  background-color: rgba(15, 17, 26, 0.35);
+  box-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+    inset 2px 1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 90%), transparent), 
+    inset -1.5px -1px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent), 
+    inset -2px -6px 1px -5px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent), 
+    inset -1px 2px 3px -1px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent), 
+    inset 0px -4px 1px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent), 
+    0px 3px 6px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 8%), transparent);
+  transition: transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              width 550ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              scale 200ms ease-out;
+  will-change: transform, width, scale;
+}
+
+html.bg-loaded .liquid-nav-pill {
+  background-color: color-mix(in srgb, var(--c-glass) 36%, transparent);
+}
+
+.liquid-nav-pill.moving {
+  scale: 0.98 1.02;
+  transition: transform 550ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              width 550ms cubic-bezier(0.34, 1.56, 0.64, 1),
+              scale 200ms ease-in;
+}
+
+.liquid-nav-container li {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 10;
+}
+
+.liquid-nav-link {
+  padding: 0 18px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 0.96rem;
+  color: var(--c-content);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: scale 200ms cubic-bezier(0.5, 0, 0, 1), color 200ms;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  touch-action: pan-y;
+}
+
+.liquid-nav-link.theme-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0 16px;
+}
+
+.liquid-nav-container li:not(.active) a:hover,
+.liquid-nav-container li:not(.active) button:hover {
+  color: var(--c-content);
+  scale: 1.15;
+  cursor: pointer;
+}
+
+.liquid-nav-container li.active .liquid-nav-link {
+  color: var(--c-content);
+  scale: 1;
+  font-weight: 700;
+  cursor: default;
+}
+
+/* Scrollbar personalizado con efectos premium */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(248, 250, 252, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: rgba(3, 5, 10, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.8));
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 0 10px rgba(99, 102, 241, 0.3),
+    inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(99, 102, 241, 0.9));
+  box-shadow: 
+    0 0 15px rgba(139, 92, 246, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 1), rgba(139, 92, 246, 1));
+  transform: scale(1.05);
+  box-shadow: 
+    0 0 20px rgba(99, 102, 241, 0.5),
+    inset 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 1), rgba(99, 102, 241, 1));
+  box-shadow: 
+    0 0 25px rgba(139, 92, 246, 0.6),
+    inset 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+::-webkit-scrollbar-thumb:active {
+  transform: scale(0.95);
+  background: linear-gradient(135deg, rgba(79, 70, 229, 1), rgba(124, 58, 237, 1));
+}
+
+/* Scrollbar para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.8) rgba(248, 250, 252, 0.1);
+}
+
+.dark * {
+  scrollbar-color: rgba(139, 92, 246, 0.9) rgba(3, 5, 10, 0.5);
+}
+
+/* Efecto de brillo cuando se hace scroll */
+@keyframes scrollbar-glow {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px rgba(99, 102, 241, 0.3),
+      inset 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px rgba(99, 102, 241, 0.6),
+      inset 0 0 15px rgba(255, 255, 255, 0.2);
+  }
+}
+
+::-webkit-scrollbar-thumb:hover {
+  animation: scrollbar-glow 2s ease-in-out infinite;
+}
+
+@media (max-width: 767px) {
+
+  .gooey-blob {
+    display: none !important;
+  }
+
+  .gooey-inner {
+    filter: none !important;
+  }
+}
+
+/* Projects grid: dynamic columns based on project count */
+@media (min-width: 1024px) {
+  .projects-grid {
+    grid-template-columns: repeat(var(--project-cols, 3), minmax(0, 380px));
+    justify-content: space-between;
+  }
+}
+
+/* ─── Contact Form — glass inputs ─── */
+
+.c-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.c-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(107, 114, 128, 0.9);
+}
+
+html.dark .c-label {
+  color: rgba(229, 231, 235, 0.95);
+}
+
+.c-input {
+  width: 100%;
+  padding: 0.65rem 0.875rem;
+  border-radius: 0.625rem;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  color: var(--c-content);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+html.dark .c-input {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(243, 244, 246, 1);
+}
+
+.c-input:focus {
+  border-color: rgba(14, 165, 233, 0.55);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.08);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+html.dark .c-input:focus {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+  border-color: rgba(14, 165, 233, 0.6);
+}
+
+.c-input::placeholder {
+  color: rgba(107, 114, 128, 0.5);
+}
+
+html.dark .c-input::placeholder {
+  color: rgba(156, 163, 175, 0.6);
+}
+
+textarea.c-input {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Validation styles */
+.was-validated .c-input:invalid {
+  border-color: rgba(255, 92, 138, 0.6);
+  background: rgba(255, 92, 138, 0.05);
+}
+
+.was-validated .c-input:invalid:focus {
+  box-shadow: 0 0 0 3px rgba(255, 92, 138, 0.15);
+}
+
+html.dark .was-validated .c-input:invalid {
+  border-color: rgba(255, 92, 138, 0.5);
+  background: rgba(255, 92, 138, 0.1);
+}
+
+/* Submit button — compact, pill-shaped */
+.c-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 9999px;
+  background: rgba(14, 165, 233, 0.12);
+  border: 1px solid rgba(14, 165, 233, 0.3);
+  color: #0ea5e9;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+html.dark .c-submit {
+  background: rgba(14, 165, 233, 0.09);
+  border-color: rgba(14, 165, 233, 0.2);
+  color: #38bdf8;
+}
+
+.c-submit:hover {
+  background: rgba(14, 165, 233, 0.2);
+  border-color: rgba(14, 165, 233, 0.5);
+  box-shadow: 0 0 16px rgba(14, 165, 233, 0.2);
+}
+
+html.dark .c-submit:hover {
+  background: rgba(14, 165, 233, 0.16);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.15);
+}
+
+.c-submit:active {
+  transform: scale(0.97);
+}

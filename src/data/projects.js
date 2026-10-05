@@ -1,0 +1,45 @@
+﻿export const projects = [
+  {
+    projectKey: 'busgo',
+    title: 'BusGo App',
+    subtitle: 'Rutas de Autobuses en Tiempo Real',
+    imageUrl: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2070&auto=format&fit=crop',
+    description: 'Aplicación que crea y rastrea rutas de autobuses en el mapa en tiempo real, con uso web para la administración y móvil para choferes y pasajeros. Arquitectura de microservicios con Docker, desarrollada en Java bajo el modelo MVC.',
+    tags: [
+      { label: 'Java', color: 'cyan' },
+      { label: 'Microservicios', color: 'cyan' },
+      { label: 'Docker', color: 'cyan' },
+      { label: 'PostgreSQL', color: 'cyan' },
+    ],
+    link: '#',
+    accentColor: 'cyan',
+  },
+  {
+    projectKey: 'catalogo',
+    title: 'Catálogo de Ciclo',
+    subtitle: 'Panel Administrativo Web',
+    imageUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2070&auto=format&fit=crop',
+    description: 'Aplicación web con catálogo de productos y panel administrativo para ventas, facturas y control de usuarios. Aplicación PHP completa con Laravel y Blade como motor principal, con consultas en bases de datos MySQL y una interfaz fácil de usar.',
+    tags: [
+      { label: 'PHP / Laravel', color: 'purple' },
+      { label: 'Blade', color: 'purple' },
+      { label: 'MySQL', color: 'purple' },
+    ],
+    link: '#',
+    accentColor: 'purple',
+  },
+  {
+    projectKey: 'facial',
+    title: 'Sistema_FACIAL_PRO',
+    subtitle: 'Reconocimiento Facial',
+    imageUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop',
+    description: 'Aplicación de reconocimiento facial desarrollada en Python. Base de datos MySQL para registrar ingresos en tiempo real y gestión de protocolos. Tkinter para la ventana visual y la librería cryptography para cifrar nombres de usuarios y datos sensibles.',
+    tags: [
+      { label: 'Python', color: 'emerald' },
+      { label: 'MySQL', color: 'emerald' },
+      { label: 'Tkinter', color: 'emerald' },
+    ],
+    link: '',
+    accentColor: 'emerald',
+  },
+];
