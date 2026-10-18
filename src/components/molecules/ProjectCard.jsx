@@ -1,5 +1,5 @@
 import React, { memo, useState, useCallback } from 'react';
-import { Play } from 'lucide-react';
+import { Play, ExternalLink } from 'lucide-react';
 import GlassCard from '../atoms/GlassCard';
 import { useTranslation } from '../../hooks/useTranslation';
 
@@ -11,7 +11,7 @@ const getYouTubeId = (url) => {
 
 const ProjectCard = memo(({ project }) => {
   const { t } = useTranslation();
-  const { projectKey, title, description, tags, imageUrl, videoUrl } = project;
+  const { projectKey, title, description, tags, imageUrl, videoUrl, link } = project;
   const [isPlaying, setIsPlaying] = useState(false);
   const pKey = projectKey || '';
   const transTitle = t(`projects.${pKey}.title`) || title;
@@ -19,11 +19,25 @@ const ProjectCard = memo(({ project }) => {
 
   const videoId = getYouTubeId(videoUrl);
   const hasVideo = videoId !== null;
+  const hasLink = Boolean(link && link !== '#');
 
-  const handlePlay = useCallback(() => setIsPlaying(true), []);
+  const handlePlay = useCallback((e) => {
+    e.stopPropagation();
+    setIsPlaying(true);
+  }, []);
+
+  const handleOpen = useCallback(() => {
+    if (!hasLink) return;
+    window.open(link, '_blank', 'noopener,noreferrer');
+  }, [hasLink, link]);
 
   return (
-    <GlassCard tilt={false} className="project-card flex flex-col cursor-pointer h-full min-h-[560px] border-t border-t-cyan-500/30">
+    <GlassCard
+      tilt={false}
+      onClick={hasLink ? handleOpen : undefined}
+      ariaLabel={hasLink ? `${transTitle} — ${t('projects.viewRepo')}` : transTitle}
+      className="project-card flex flex-col cursor-pointer h-full min-h-[560px] border-t border-t-cyan-500/30"
+    >
       {/* Image / Video — edge-to-edge, no padding */}
       <div className="w-full aspect-video overflow-hidden relative shrink-0">
         {hasVideo && isPlaying ? (
@@ -77,6 +91,13 @@ const ProjectCard = memo(({ project }) => {
             </span>
           ))}
         </div>
+
+        {hasLink && (
+          <div className="mt-4 pt-3 border-t border-cyan-500/15 flex items-center gap-2 text-xs font-semibold text-cyan-700 dark:text-cyan-300">
+            <ExternalLink size={14} />
+            <span>{t('projects.viewRepo')}</span>
+          </div>
+        )}
       </div>
     </GlassCard>
   );

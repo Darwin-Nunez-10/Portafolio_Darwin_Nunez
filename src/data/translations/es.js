@@ -55,6 +55,16 @@ export default {
         description:
           'Aplicación de reconocimiento facial desarrollada en Python. Base de datos MySQL para registrar ingresos en tiempo real y gestión de protocolos. Tkinter para la ventana visual y la librería cryptography para cifrar nombres de usuarios y datos sensibles.',
       },
+      gameschatbot: {
+        title: 'Games History ChatBot',
+        subtitle: 'RAG sobre Historia de los Videojuegos',
+        description:
+          'Chatbot especializado en la historia de los videojuegos. Combina un modelo LLM local (Ollama / Llama 3) con una arquitectura RAG sobre una base vectorial FAISS construida a partir de enciclopedias y libros de historia del medio, con OCR de fuentes escaneadas y recuperación diversa (MMR).',
+      },
+      prev: 'Proyecto anterior',
+      next: 'Proyecto siguiente',
+      goTo: 'Ir al proyecto',
+      viewRepo: 'Ver repositorio',
     },
     contact: {
       title: 'Hablemos de Código',

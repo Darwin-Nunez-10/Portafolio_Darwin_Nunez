@@ -55,6 +55,16 @@ export default {
         description:
           'Facial recognition app developed in Python. MySQL database to log entries in real time and manage protocols. Tkinter for the visual window and the cryptography library to encrypt user names and sensitive data.',
       },
+      gameschatbot: {
+        title: 'Games History ChatBot',
+        subtitle: 'RAG on Video Game History',
+        description:
+          'A chatbot specialized in video game history. It combines a local LLM (Ollama / Llama 3) with a RAG architecture over a FAISS vector store built from video game history encyclopedias and books, using OCR for scanned sources and diverse retrieval (MMR).',
+      },
+      prev: 'Previous project',
+      next: 'Next project',
+      goTo: 'Go to project',
+      viewRepo: 'View repository',
     },
     contact: {
       title: "Let's Talk Code",

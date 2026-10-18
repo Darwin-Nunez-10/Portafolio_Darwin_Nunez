@@ -1,13 +1,15 @@
 import { useCallback, useSyncExternalStore } from 'react';
-import { DICTS, FALLBACK_LANG } from '../data/translations';
+import { DICTS, FALLBACK_LANG, DEFAULT_LANG } from '../data/translations';
 
-const STORAGE_KEY = 'lang';
+// Bumped from "lang" so a previously stored "es" (from the old default)
+// no longer overrides the new English default on first load.
+const STORAGE_KEY = 'lang_v2';
 
 function resolveLang() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved && DICTS[saved]) return saved;
-  const browser = (navigator.language || '').split('-')[0];
-  return DICTS[browser] ? browser : FALLBACK_LANG;
+  // English is the primary language: default to it on first visit.
+  return DEFAULT_LANG;
 }
 
 let currentLang = resolveLang();

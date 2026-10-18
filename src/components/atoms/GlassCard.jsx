@@ -1,11 +1,12 @@
 import React, { useRef, useCallback, memo } from 'react';
 import { MOBILE_MAX } from '../../utils/breakpoints';
 
-const GlassCard = memo(({ children, className = '', tilt = false, isNavbar = false, performanceTier = 'high' }) => {
+const GlassCard = memo(({ children, className = '', tilt = false, isNavbar = false, performanceTier = 'high', onClick, ariaLabel }) => {
   const wrapperRef = useRef(null);
   const cardRef = useRef(null);
   const animationFrameRef = useRef(null);
   const isLowPerf = performanceTier === 'low';
+  const isInteractive = typeof onClick === 'function';
 
   const handleMouseMove = useCallback((e) => {
     if (!cardRef.current || !wrapperRef.current || window.innerWidth <= MOBILE_MAX) return;
@@ -41,6 +42,14 @@ const GlassCard = memo(({ children, className = '', tilt = false, isNavbar = fal
     }
   }, [tilt]);
 
+  const handleKeyDown = useCallback((e) => {
+    if (!isInteractive) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(e);
+    }
+  }, [isInteractive, onClick]);
+
   const radius = isNavbar ? 'rounded-full' : 'rounded-3xl';
 
   return (
@@ -48,7 +57,12 @@ const GlassCard = memo(({ children, className = '', tilt = false, isNavbar = fal
       ref={wrapperRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`relative group ${radius} w-full h-full`}
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
+      role={isInteractive ? 'link' : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
+      aria-label={isInteractive ? ariaLabel : undefined}
+      className={`relative group ${radius} w-full h-full ${isInteractive ? 'cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500/60' : ''}`}
       style={{ '--mouse-x': '-999px', '--mouse-y': '-999px' }}
     >
       {/* Card body */}

@@ -1138,3 +1138,65 @@ html.dark .c-submit:hover {
 .c-submit:active {
   transform: scale(0.97);
 }
+
+/* ─── Projects carousel (swipeable) ─── */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.project-scroller {
+  cursor: grab;
+  -webkit-overflow-scrolling: touch;
+}
+
+.project-scroller.is-grabbing {
+  cursor: grabbing;
+  scroll-behavior: auto;
+}
+
+.project-scroller.is-grabbing * {
+  user-select: none;
+}
+
+.carousel-arrow {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  color: #18181b;
+  background-color: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+  backdrop-filter: blur(10px) saturate(1.4);
+  border: 1px solid color-mix(in srgb, var(--c-light) 45%, transparent);
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.18);
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+}
+
+html.dark .carousel-arrow {
+  color: #ffffff;
+  background-color: rgba(18, 21, 32, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.carousel-arrow:hover:not(:disabled) {
+  transform: scale(1.08);
+}
+
+.carousel-arrow:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .carousel-arrow {
+    display: flex;
+  }
+}
