@@ -2,7 +2,7 @@
   { name: "GitHub", href: "https://github.com/Darwin-Nunez-10", iconKey: "Github" },
   {
     name: "LinkedIn",
-    href: "https://www.linkedin.com/in/darwin-nu%C3%B1ez-b74452370/",
+    href: "https://www.linkedin.com/in/darwin-n%C3%BA%C3%B1ez-chavarria-b74452370/",
     iconKey: "Linkedin",
   },
   {

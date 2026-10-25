@@ -147,7 +147,7 @@ export default function App() {
 
   const socialLinks = useMemo(() => [
     { name: 'GitHub', href: 'https://github.com/Darwin-Nunez-10', iconKey: 'github' },
-    { name: 'LinkedIn', href: 'https://www.linkedin.com/in/darwin-nu%C3%B1ez-b74452370/', iconKey: 'linkedin' },
+    { name: 'LinkedIn', href: 'https://www.linkedin.com/in/darwin-n%C3%BA%C3%B1ez-chavarria-b74452370/', iconKey: 'linkedin' },
     { name: 'Email', href: 'mailto:darwinn990@gmail.com', iconKey: 'email' },
   ], []);
 
