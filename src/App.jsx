@@ -152,7 +152,7 @@ export default function App() {
   ], []);
 
   const handleCVDownload = useCallback(() => {  
-    window.open(`/cv/Darwin_Nuñez_CV_${lang.toUpperCase()}.pdf`, '_blank');
+    window.open(`/cv/Darwin_Nunez_CV_${lang.toUpperCase()}.pdf`, '_blank');
   }, [lang]);
 
   const [loadBg, setLoadBg] = useState(() => typeof window !== 'undefined' && window.innerWidth > 768);
