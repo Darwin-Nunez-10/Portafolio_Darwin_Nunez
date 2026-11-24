@@ -26,7 +26,7 @@ export default {
       laptopAlt: 'laptop 3D',
       p1: 'Estudiante de Ingeniería de Sistemas de la Información en la Universidad Nacional (UNA), con graduación prevista para 2026. Ingeniero de sistemas enfocado en construir software robusto y escalable, apasionado por desarrollar aplicaciones innovadoras con un propósito social.',
       p2: 'Busco aplicar nuevas tecnologías para optimizar procesos críticos en sectores como la salud y la educación. Soy un jugador de equipo proactivo con sólidas habilidades analíticas y de resolución de problemas, capaz de trabajar bajo presión y profundamente comprometido con el éxito organizacional y el crecimiento profesional.',
-      p3: 'Experiencia en C, C++, C#, Python, PHP, Java, JavaScript, Kotlin, SQL (PL/SQL) y Bash. Trabajo con Docker, Git y frameworks como React, Node, .NET, Jetpack Compose y React Native. Manejo de bases de datos MySQL, PostgreSQL y SQL Server. Español nativo e inglés intermedio (B1).',
+      p3: 'Experiencia en C, C++, C#, Python, PHP, Java, JavaScript, Kotlin, SQL (PL/SQL) y Bash. Trabajo con Docker, Git y frameworks como React, Node, .NET, Jetpack Compose y React Native. Manejo de bases de datos MySQL, PostgreSQL y SQL Server. Español nativo e inglés intermedio alto (B2).',
     },
     skills: {
       title: 'Stack Tecnológico',

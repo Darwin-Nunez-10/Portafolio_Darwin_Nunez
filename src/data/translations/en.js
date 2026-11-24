@@ -26,7 +26,7 @@ export default {
       laptopAlt: '3D laptop',
       p1: "Systems Engineering of Information student at Universidad Nacional (UNA), expected to graduate in 2026. Systems Engineer focused on building robust and scalable software, passionate about developing innovative apps with a social purpose.",
       p2: "Seeking to apply new technologies to optimize critical processes in sectors such as healthcare and education. A proactive team player with strong analytical and problem-solving skills, capable of working under pressure and deeply committed to organizational success and professional growth.",
-      p3: "Experience in C, C++, C#, Python, PHP, Java, JavaScript, Kotlin, SQL (PL/SQL), and Bash. Working with Docker, Git, and frameworks such as React, Node, .NET, Jetpack Compose, and React Native. Skilled in MySQL, PostgreSQL, and SQL Server databases. Native Spanish and intermediate English (B1).",
+      p3: "Experience in C, C++, C#, Python, PHP, Java, JavaScript, Kotlin, SQL (PL/SQL), and Bash. Working with Docker, Git, and frameworks such as React, Node, .NET, Jetpack Compose, and React Native. Skilled in MySQL, PostgreSQL, and SQL Server databases. Native Spanish and upper-intermediate English (B2).",
     },
     skills: {
       title: 'Tech Stack',
